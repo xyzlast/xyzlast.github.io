@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>03.개인 개발 환경 구축 | Hexo</title>
+
+  
+  <meta name="author" content="John Doe">
+  
+
+  
+  <meta name="description" content="개인개발환경 구성이 장에서는 개인적으로 추천하는 개발 툴들을 소개하고자 합니다.java 개발환경은 모두가 설정할 줄 안다고 가정을 하고, IDE는 IntelliJ community version을 기반으로 설명을 하도록 하겠습니다.
+gradlegradle은 안드로이드 ">
+  
+
+  
+  
+  <meta name="keywords" content="study">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="03.개인 개발 환경 구축"/>
+
+  <meta property="og:site_name" content="Hexo"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Hexo</a>
+    </h1>
+    <p class="site-description"></p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>03.개인 개발 환경 구축</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2018/02/01/03-personalEnv/" rel="bookmark">
+        <time class="entry-date published" datetime="2018-02-01T03:44:11.000Z">
+          2018-02-01
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <h1 id="개인개발환경-구성"><a href="#개인개발환경-구성" class="headerlink" title="개인개발환경 구성"></a>개인개발환경 구성</h1><p>이 장에서는 개인적으로 추천하는 개발 툴들을 소개하고자 합니다.<br>java 개발환경은 모두가 설정할 줄 안다고 가정을 하고, IDE는 IntelliJ community version을 기반으로 설명을 하도록 하겠습니다.</p>
+<h2 id="gradle"><a href="#gradle" class="headerlink" title="gradle"></a>gradle</h2><p>gradle은 안드로이드 개발을 할때 많이 보신분들이 있겠지만, build tool입니다.<br>java, c#, c++ 등 모든 언어를 compile 할 수 있는 build tool을 목표로 하고 있습니다. java에서는 maven이 가장 많이 사용되고 있는 build tool이지만,<br>개인적으로는 gradle이 더 좋은 tool이라고 확신하는 편입니다.</p>
+<p>Spring Source 역시 gradle을 기본 build tool로 사용하고 있으며, multi-project build에 강점을 갖습니다. 다양한 plugin 역시 장점입니다.</p>
+<h3 id="build란"><a href="#build란" class="headerlink" title="build란?"></a>build란?</h3><p><em>build라는 것이 무엇인가</em>에 대한 정의에 따라서 build tool이 해야지 되는 일들은 달라집니다.<br>기본적인 build의 정의는 다음과 같이 말할 수 있습니다.</p>
+<p><em>소스 코드를 동작하는 독립적인 소프트웨어 산출물로 만드는 과정</em></p>
+<p>매우 단순하게 정의가 가능한 이 과정은 막상 해보게 되면 다음과 같은 문제를 같이 생각해봐야지 됩니다.</p>
+<ul>
+<li>의존관계를 갖는 외부 library와의 버젼 관리 문제</li>
+<li>개발자 1명이 아닌, 개발팀이 동시에 환경을 구축이 가능한 수 있는지</li>
+</ul>
+<p>그리고, 작은 의미의 build가 아닌 좀 더 확대해보면 다음과 같이 말할 수 있습니다.</p>
+<p><em>소스 코드를 동작하는 독립적인 소프트웨어 산출물로 만들어 배포하는 과정</em></p>
+<p>이렇게 생각해보면 build는 compile, test, publish를 모두 포함하는 범위입니다. 이러한 build를 도와주는 tool을 build tool이라고 합니다.<br>java에서는 maven, gradle이 사실상의 정의(de-factor)로 사용되고 있습니다.</p>
+<p>java에서의 주요 build tool은 다음것들이 있습니다.</p>
+<h4 id="Apache-Ant"><a href="#Apache-Ant" class="headerlink" title="Apache Ant"></a>Apache Ant</h4><ul>
+<li>java로 구현된 project의 build에 적합함</li>
+<li>file의 copy, command의 실행에 중점</li>
+<li>java project의 경우, classpath와 javac 명령어의    조합으로 compile 하는    것을 목적</li>
+<li>build.xml 또는 ant.properties 파일을 통해서 build를 정의</li>
+</ul>
+<h4 id="Apache-Maven"><a href="#Apache-Maven" class="headerlink" title="Apache Maven"></a>Apache Maven</h4><ul>
+<li>ant와 비슷</li>
+<li>goal, phase를 통해 project의 life cycle을 정형화 하고 관리</li>
+<li>pom.xml 을 통해 build를 정의</li>
+<li>dependency library들의 버젼별 관리 가능</li>
+<li>documentation 및 relase note에 대한 정의</li>
+</ul>
+<h4 id="Gradle"><a href="#Gradle" class="headerlink" title="Gradle"></a>Gradle</h4><ul>
+<li>ant + maven + groovy</li>
+<li>plug in의 조합으로 project의 life cycle을 정형화하고 관리</li>
+<li>maven의 goal로 지정되어 있는 정적인 결합이 아닌, groovy언어로 programing이 가능한 build의 정의가 가능</li>
+</ul>
+<h2 id="git-flow"><a href="#git-flow" class="headerlink" title="git flow"></a>git flow</h2><p><em>git</em>을 이용한 개발시에 있어서 개발 process를 강제하는 command tool입니다.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git flow [command]</span><br></pre></td></tr></table></figure>
+<p>를 통해서 실행을 하며 branch -&gt; commit -&gt; develop merge -&gt; master merge를 강제하게 됩니다. git을 <em>잘</em> 사용하게 돕는 tool로 생각하면 좋습니다.<br>다음은 git flow의 예시입니다.</p>
+<h3 id="신규-Issue의-진행"><a href="#신규-Issue의-진행" class="headerlink" title="신규 Issue의 진행"></a>신규 Issue의 진행</h3><ul>
+<li>redmine에서 신규 개발 process issue 80번을 확인</li>
+<li><code>git flow feature start is80</code>을 통해 신규 branch 에서 작업 진행</li>
+<li><code>git flow feature finish is80</code>을 통해 branch 작업 완료</li>
+<li><code>git checkout master</code>를 통해 신규 master branch 이동</li>
+<li><code>git pull</code>을 통해 최신 master update</li>
+<li><code>git merge develop</code>를 통해 개발한 내용 merge</li>
+<li><code>git push</code>를 통한 최신 소스 push</li>
+<li><code>git checkout develop</code>를 통해 다시 개발 branch로 이동</li>
+</ul>
+<h3 id="신규-Release-진행"><a href="#신규-Release-진행" class="headerlink" title="신규 Release 진행"></a>신규 Release 진행</h3><ul>
+<li>master, develop간의 sync 확인</li>
+<li><code>git flow release start [[version-name]]</code>을 통해 신규 release 시작</li>
+<li><code>git flow release finish [[version-name]]</code>을 통해 release tag 를 붙여서 release를 작성</li>
+<li><code>git push origin [[version-name]]</code>을 통해 tag된 release를 remote origin으로 push</li>
+</ul>
+<p>자세한 설명은 <a href="https://danielkummer.github.io/git-flow-cheatsheet/index.ko_KR.html" target="_blank" rel="noopener">https://danielkummer.github.io/git-flow-cheatsheet/index.ko_KR.html</a> 를 통해 볼 수 있습니다. 많은 분들이 사용하셨으면 하는 tool입니다.</p>
+<h2 id="git-kraken"><a href="#git-kraken" class="headerlink" title="git kraken"></a>git kraken</h2><p>git의 개발 흐름을 한눈에 볼 수 있도록 도와주는 tool입니다. commit 등에도 유용하게 사용이 가능하지만, 개인적으론 git은 terminal 환경에서 사용하는 것이 더 좋고, 개발흐름을 보는데 많은 도움을 줄 수 있습니다.</p>
+<p><img src="/images/03/gitkraken.png" alt=""></p>
+<h2 id="PMD-codestyle-FindBug"><a href="#PMD-codestyle-FindBug" class="headerlink" title="PMD, codestyle, FindBug"></a>PMD, codestyle, FindBug</h2><p>PMD, codestyle, FindBug은 자바를 위한 정적 분석 도구입니다. 개발자들은 표준 코드에 부합하고 좋은 코드를 제공하기 위해 사용하는 것이 좋습니다. 팀 리더와 품질 보증 직원들은 코드 검토(Code Review)의 특성을 바꾸기 위해 사용하는데, 이 도구들은 코드 검토로부터 발견된 기계적이고 문법 적인 점검을 취약점으로 변경하게 됩니다.</p>
+<p>자신들의 코드를 끊임없이 평가를 받고 그에 대한 feedback을 받을 수 있다면, 개발자들의 실력은 좀 더 나아질 수 있을 것입니다.</p>
+<h2 id="sonarQube"><a href="#sonarQube" class="headerlink" title="sonarQube"></a>sonarQube</h2><p>PMD, codestyle, FindBug에서 평가된 내용에 대한 통계 및 처리 방법에 대한 Report를 제공합니다. 이러한 Report를 볼 수 있습니다. (<a href="http://192.168.94.18:9000/dashboard?id=fds-v2" target="_blank" rel="noopener">http://192.168.94.18:9000/dashboard?id=fds-v2</a>)</p>
+<p><img src="/images/04/sonarqube.png" alt=""></p>
+<h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><p>교육중에 DB는 Docker image를 통해 제공하도록 하겠습니다. 제 IP를 기준으로 image를 다운 받을 수 있도록 하겠습니다. docker에 대해서 사용을 해보시고, 어떤 식으로 사용이 가능할지를 한번 고민해보는 자리가 되었으면 좋겠습니다.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>앞으로는 실제적인 개발코드 및 과제가 나갈 예정입니다. 아래 SW의 설치를 해둔 환경을 준비해주시길 바랍니다.</p>
+<ul>
+<li>IntelliJ Community Version</li>
+<li>Gradle</li>
+<li>JAVA 8</li>
+<li>DOCKER</li>
+</ul>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/study/">study</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2018 John Doe
+    
+  </p>
+</footer>
+    
+  </div>
+</div>
+</body>
+</html>

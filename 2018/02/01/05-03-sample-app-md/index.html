@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   
-  <title>05-03.SampleApplication | Hexo</title>
+  <title>05-03.SampleApplication (3) | Hexo</title>
 
   
   <meta name="author" content="John Doe">
@@ -22,7 +22,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-  <meta property="og:title" content="05-03.SampleApplication"/>
+  <meta property="og:title" content="05-03.SampleApplication (3)"/>
 
   <meta property="og:site_name" content="Hexo"/>
 
@@ -63,14 +63,14 @@
 
   
     
-    <h3 class="article-title"><span>05-03.SampleApplication</span></h3>
+    <h3 class="article-title"><span>05-03.SampleApplication (3)</span></h3>
     
   
 
   <div class="article-top-meta">
     <span class="posted-on">
-      <a href="/2018/02/01/05-03-SampleApplication/" rel="bookmark">
-        <time class="entry-date published" datetime="2018-02-01T02:23:24.000Z">
+      <a href="/2018/02/01/05-03-sample-app-md/" rel="bookmark">
+        <time class="entry-date published" datetime="2018-02-01T03:48:40.000Z">
           2018-02-01
         </time>
       </a>
@@ -189,11 +189,11 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">checkBeanLifeCycle</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    ConnectionFactory singleton01 = (ConnectionFactory) context.getBean(<span class="string">"connectionFactoryWithSingleton"</span>);</span><br><span class="line">    ConnectionFactory singleton02 = (ConnectionFactory) context.getBean(<span class="string">"connectionFactoryWithSingleton"</span>);</span><br><span class="line">    assertThat(singleton01.hashCode()).isEqualTo(singleton02.hashCode());</span><br><span class="line"></span><br><span class="line">    ConnectionFactory proxy01 = (ConnectionFactory) context.getBean(<span class="string">"connectionFactoryWithProxy"</span>);</span><br><span class="line">    ConnectionFactory proxy02 = (ConnectionFactory) context.getBean(<span class="string">"connectionFactoryWithProxy"</span>);</span><br><span class="line">    assertThat(proxy01.hashCode()).isNotEqualTo(proxy02.hashCode());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>이 코드를 확인해보시면 아시겠지만 Factory Pattern에서의 Factory와 동일한 기능을 가지게 되는 것을 알 수 있는데요. <strong>ApplicationContext는 bean의 Map과 Factory를 지원한다.</strong> 라고 할 수 있습니다.<br>spring을 사용하게 되면, 객체들을 new로 새롭게 할당하는 일들이 얼마 없습니다. 아니 new를 안쓰고 만들 수 있어야지 됩니다. 모든 객체 bean들은 spring을 통해서 관리가 되고, bean들간의 데이터 교환을 위한 POJO(Plain Old Java Object)들만 new로 생성되어서 데이터 교환이 되는 것이 일반적인 패턴입니다.</p>
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>이번 장에서는 Spring을 이용한 객체의 관리를 위주로 Simple Application을 작성해봤습니다. 다음 개념들은 반드시 다시 정리해보시는 것이 좋습니다.</p>
-<ol>
+<ul>
 <li>ApplicationContext : Spring에서 제공하는 bean의 Map/ObjectFactory</li>
 <li>property, constructor, init-method를 이용한 객체 초기화 방법</li>
 <li>IoC, DIP, DI</li>
-</ol>
+</ul>
 
       
     </div>
