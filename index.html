@@ -315,7 +315,7 @@
   <div class="article-content">
     <div class="entry">
       
-        <h1 id="SampleApplication-DAO-4"><a href="#SampleApplication-DAO-4" class="headerlink" title="SampleApplication - DAO (4)"></a>SampleApplication - DAO (4)</h1><h2 id="코드-정리-객체간의-중복-코드-정리"><a href="#코드-정리-객체간의-중복-코드-정리" class="headerlink" title="코드 정리 - 객체간의 중복 코드 정리"></a>코드 정리 - 객체간의 중복 코드 정리</h2><p>지금까지 우리는 books라는 한개의 table에 CRUD action을 진행해왔습니다. 그렇지만, 개발에서는 한개의 Table만에 CRUD를 하는 경우보다, 한 Action에 대하여 여러개의 Table을 CRUD 하게 되는 것이 일반적입니다.</p>
+        <h1 id="SampleApplication-4-TemplateCallback-pattern"><a href="#SampleApplication-4-TemplateCallback-pattern" class="headerlink" title="SampleApplication(4) - TemplateCallback pattern"></a>SampleApplication(4) - TemplateCallback pattern</h1><h2 id="코드-정리-객체간의-중복-코드-정리"><a href="#코드-정리-객체간의-중복-코드-정리" class="headerlink" title="코드 정리 - 객체간의 중복 코드 정리"></a>코드 정리 - 객체간의 중복 코드 정리</h2><p>지금까지 우리는 books라는 한개의 table에 CRUD action을 진행해왔습니다. 그렇지만, 개발에서는 한개의 Table만에 CRUD를 하는 경우보다, 한 Action에 대하여 여러개의 Table을 CRUD 하게 되는 것이 일반적입니다.</p>
 <p>그래서, 이 두개의 개념을 나누게 되는데요.<br>하나의 Action이라는 것은 Business Logic이라고 할 수 있고, 한 Table에 대한 CRUD는 DB에 종속적인 작업이라고 할 수 있습니다.<br>전자를 일반적으로 Service라고 지칭하고, 후자를 DAO (Data Access Object)라고 지칭하는 것이 일반적입니다. 그리고, DB를 통해서 처리되는 Table 단위 또는 Query 단위의 Object들을 Entity(or model)라고 명명합니다.</p>
 <p>이와 같은 이름으로 package로 나누게 되는 것이 일반적입니다. dao, entities, service package를 나누것과 같이 이런 식으로 나눠주는 것이 좋습니다.</p>
 <p>1개의 Service는 여러개의 DAO를 가지고 있고, DAO를 이용한 BL을 서술하는 것이 일반적입니다. DAO는 최대한 단순하게 Table에 대한 Query들로 구성이 되고, 그 Query를 통해서 결과를 얻어내는 수단으로 주로 사용됩니다. bookstore에 Business Logic(BL)을 추가하기 전에 book의 상태를 서술할수 있는 property와 현재 책을 빌려간 사용자의 정보를 저장할 수 있는 Column을 두개 추가하고, users table을 추가해서 Dao를 좀더 구성해보도록 하겠습니다.</p>
@@ -414,7 +414,7 @@
 
   
     
-    <h3 class="article-title"><a href="/2018/02/01/05-03-sample-app-md/"><span>05-03.SampleApplication (3)</span></a></h3>
+    <h3 class="article-title"><a href="/2018/02/01/05-03-sample-app-md/"><span>05-03.SampleApplication(3)</span></a></h3>
     
   
 
@@ -434,7 +434,7 @@
   <div class="article-content">
     <div class="entry">
       
-        <h1 id="SampleApplication-3"><a href="#SampleApplication-3" class="headerlink" title="SampleApplication (3)"></a>SampleApplication (3)</h1><p>지금까지 간단한 코드와 그 코드에 대한 테스트를 행하는 방법에 대해서 알아봤습니다. 그리고 간단한 table의 CRUD를 하는 방법에 대해서 조금 깊게 들어가봤습니다. 또한 저번 시간의 최대 포인트는 테스트입니다. 테스트를 어떻게 작성을 하는지에 대한 논의와 테스트 코드를 직접 사용해보는 시간을 가져봤습니다. 이번 시간에는 드디어 Spring을 이용한 코드에 대해서 논의해보도록 하겠습니다.기존 코드의 가장 큰 문제는 무엇인가요?</p>
+        <h1 id="SampleApplication-3-DIP"><a href="#SampleApplication-3-DIP" class="headerlink" title="SampleApplication(3) - DIP"></a>SampleApplication(3) - DIP</h1><p>지금까지 간단한 코드와 그 코드에 대한 테스트를 행하는 방법에 대해서 알아봤습니다. 그리고 간단한 table의 CRUD를 하는 방법에 대해서 조금 깊게 들어가봤습니다. 또한 저번 시간의 최대 포인트는 테스트입니다. 테스트를 어떻게 작성을 하는지에 대한 논의와 테스트 코드를 직접 사용해보는 시간을 가져봤습니다. 이번 시간에는 드디어 Spring을 이용한 코드에 대해서 논의해보도록 하겠습니다.기존 코드의 가장 큰 문제는 무엇인가요?</p>
 <ul>
 <li>DB connection이 변경되는 경우, compile을 다시 해줘야지 된다.</li>
 <li>DB connection의 open/close가 모든 method에서 반복된다.</li>
@@ -561,7 +561,7 @@
 
     <span class="post-tags">
       <i class="icon-tags"></i>
-        <a href="/tags/study/">study</a>
+        <a href="/tags/study-java-DIP-SOLID/">study,java,DIP,SOLID</a>
     </span>
     
 
@@ -597,7 +597,7 @@
   <div class="article-content">
     <div class="entry">
       
-        <h1 id="Sample-Application-테스트-코드평가"><a href="#Sample-Application-테스트-코드평가" class="headerlink" title="Sample Application - 테스트/코드평가"></a>Sample Application - 테스트/코드평가</h1><h2 id="Test를-통한-코드-평가"><a href="#Test를-통한-코드-평가" class="headerlink" title="Test를 통한 코드 평가"></a>Test를 통한 코드 평가</h2><p>올바른 테스트란, 사람이 개입되어서는 안됩니다. 사람이 눈으로 테스트를 확인하는 경우는, 그것을 보지 않는다면 또는 테스트가 너무나 많아져서 테스트의 정보를 확인할 수 없다면 완전히 무용지물이 되어버리고 맙니다. 그리고, 개발을 해보시면 좀더 느끼시지만 하나를 만드니 다른쪽에서 에러가 발생할 수도 있습니다. 마지막으로 CI 환경에서 자동화된 build를 지원할 수가 없습니다.</p>
+        <h1 id="SampleApplication-2-테스트-코드평가"><a href="#SampleApplication-2-테스트-코드평가" class="headerlink" title="SampleApplication(2) - 테스트/코드평가"></a>SampleApplication(2) - 테스트/코드평가</h1><h2 id="Test를-통한-코드-평가"><a href="#Test를-통한-코드-평가" class="headerlink" title="Test를 통한 코드 평가"></a>Test를 통한 코드 평가</h2><p>올바른 테스트란, 사람이 개입되어서는 안됩니다. 사람이 눈으로 테스트를 확인하는 경우는, 그것을 보지 않는다면 또는 테스트가 너무나 많아져서 테스트의 정보를 확인할 수 없다면 완전히 무용지물이 되어버리고 맙니다. 그리고, 개발을 해보시면 좀더 느끼시지만 하나를 만드니 다른쪽에서 에러가 발생할 수도 있습니다. 마지막으로 CI 환경에서 자동화된 build를 지원할 수가 없습니다.</p>
 <p>따라서, 테스트는 확인 가능하나 완전 자동적인 코드로서 구성이 되어야지 됩니다. 테스트는 크게 2가지로 나눌 수 있습니다. 전에 CI에 대해서 간략하게 설명을 할 때, QA 부서에서 담당하기 전 단계라고 할 수 있는 단위 테스트(Unit TEST)와 QA 부서에서 진행하는 통합 테스트가 존재합니다. 잘 만들어진 개발 조직에서, 개발자는 자신의 단위 테스트를 유지하고 관리할 의무를 가지고 있습니다. 그리고 자신의 코드가 단위적으로는 에러가 발생하지 않는다는 결과를 보여줄 수 있는 방법이 있어야지 됩니다. 이를 위해 java에서는 junit이라는 테스트 도구를 배포하고 있고, 이 테스트 코드를 사용하면 자동화 되고, 확인이 가능한 코드로서 사용할 수가 있습니다.</p>
 <p>따라서, 기본 folder구조에 왜 <code>src/test</code> 폴더가 존재하는지 알 수 있습니다. 테스트 코드 역시 관리 되어야지 되며, 이를 통해 코드의 변경이 일어났을 때, 그 코드의 문제점을 확인할 수 있어야지 됩니다.</p>
 <p>java에서는 <code>JUnit</code>이라는 멋진 테스트 툴이 있습니다. 이 툴에 대해서 한번 알아보도록 하겠습니다.</p>
@@ -717,7 +717,7 @@
 
     <span class="post-tags">
       <i class="icon-tags"></i>
-        <a href="/tags/study/">study</a>
+        <a href="/tags/study-java/">study,java</a>
     </span>
     
 
@@ -733,7 +733,7 @@
 
   
     
-    <h3 class="article-title"><a href="/2018/02/01/05-01-sample-app-md/"><span>05-01.SampleApplication 개발(1) - 초난감 Project</span></a></h3>
+    <h3 class="article-title"><a href="/2018/02/01/05-01-sample-app-md/"><span>05-01.SampleApplication(1) - 초난감 Project</span></a></h3>
     
   
 
@@ -753,7 +753,7 @@
   <div class="article-content">
     <div class="entry">
       
-        <h1 id="spring을-이용한-Simple-application의-제작-1-초난감-프로젝트"><a href="#spring을-이용한-Simple-application의-제작-1-초난감-프로젝트" class="headerlink" title="spring을 이용한 Simple application의 제작 (1) - 초난감 프로젝트"></a>spring을 이용한 Simple application의 제작 (1) - 초난감 프로젝트</h1><p>이 장의 제목은 Toby의 Spring Framework에서 붙인 이름을 그대로 표절해봤습니다. 매우 큰 문제를 가진 간단한 프로그램이 뛰어난 확장성과 처음의 너저분한 코드에서 점차 깔끔하게 구성 되어가는 코드로 점차 변경되어가는 것을 볼 수 있을겁니다.<br>먼저, 간단한 application입니다. bookStore라고 하나의 Project를 만들고, books 라는 table에 대한 CRUD와 count를 하는 application을 간단히 작성해보도록 하겠습니다.</p>
+        <h1 id="SampleApplication-1-초난감-프로젝트"><a href="#SampleApplication-1-초난감-프로젝트" class="headerlink" title="SampleApplication(1) - 초난감 프로젝트"></a>SampleApplication(1) - 초난감 프로젝트</h1><p>이 장의 제목은 Toby의 Spring Framework에서 붙인 이름을 그대로 표절해봤습니다. 매우 큰 문제를 가진 간단한 프로그램이 뛰어난 확장성과 처음의 너저분한 코드에서 점차 깔끔하게 구성 되어가는 코드로 점차 변경되어가는 것을 볼 수 있을겁니다.<br>먼저, 간단한 application입니다. bookStore라고 하나의 Project를 만들고, books 라는 table에 대한 CRUD와 count를 하는 application을 간단히 작성해보도록 하겠습니다.</p>
 <h2 id="개발-환경-준비-amp-초기화"><a href="#개발-환경-준비-amp-초기화" class="headerlink" title="개발 환경 준비 &amp; 초기화"></a>개발 환경 준비 &amp; 초기화</h2><h3 id="Docker를-이용한-Database-준비"><a href="#Docker를-이용한-Database-준비" class="headerlink" title="Docker를 이용한 Database 준비"></a>Docker를 이용한 Database 준비</h3><p>먼저, 대상이 되는 database를 준비하도록 하겠습니다. docker를 이용해서 제가 준비를 해두었습니다. docker cmd를 통해서 다음 명령어를 실행합니다.</p>
 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p <span class="number">4306</span>:<span class="number">3306</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">94</span>.<span class="number">18</span>:<span class="number">15000</span>/study-container:<span class="number">002</span> mysqld_safe</span><br></pre></td></tr></table></figure>
 <p>를 실행하면 docker container에서 실행되어 있을것입니다.<br>그 후, host machine으로 돌아와서(CTRL + P, CTRL + Q) 다음 <code>cmd</code>를 통해 db에 정상적으로 붙을 수 있는지 확인하도록 합니다.</p>
@@ -887,7 +887,7 @@
 
     <span class="post-tags">
       <i class="icon-tags"></i>
-        <a href="/tags/study/">study</a>
+        <a href="/tags/study-java/">study,java</a>
     </span>
     
 

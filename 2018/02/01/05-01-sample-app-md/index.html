@@ -3,26 +3,26 @@
 <head>
   <meta charset="utf-8">
   
-  <title>05-01.SampleApplication 개발(1) - 초난감 Project | Programming is Fun | Still waters run deep. When the well&#39;s dry, we know the worth of water.</title>
+  <title>05-01.SampleApplication(1) - 초난감 Project | Programming is Fun | Still waters run deep. When the well&#39;s dry, we know the worth of water.</title>
 
   
   <meta name="author" content="ykyoon">
   
 
   
-  <meta name="description" content="spring을 이용한 Simple application의 제작 (1) - 초난감 프로젝트이 장의 제목은 Toby의 Spring Framework에서 붙인 이름을 그대로 표절해봤습니다. 매우 큰 문제를 가진 간단한 프로그램이 뛰어난 확장성과 처음의 너저분한 코드에서 점차">
+  <meta name="description" content="SampleApplication(1) - 초난감 프로젝트이 장의 제목은 Toby의 Spring Framework에서 붙인 이름을 그대로 표절해봤습니다. 매우 큰 문제를 가진 간단한 프로그램이 뛰어난 확장성과 처음의 너저분한 코드에서 점차 깔끔하게 구성 되어가는 코드로 ">
   
 
   
   
-  <meta name="keywords" content="study">
+  <meta name="keywords" content="study,java">
   
 
   <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-  <meta property="og:title" content="05-01.SampleApplication 개발(1) - 초난감 Project"/>
+  <meta property="og:title" content="05-01.SampleApplication(1) - 초난감 Project"/>
 
   <meta property="og:site_name" content="Programming is Fun"/>
 
@@ -63,7 +63,7 @@
 
   
     
-    <h3 class="article-title"><span>05-01.SampleApplication 개발(1) - 초난감 Project</span></h3>
+    <h3 class="article-title"><span>05-01.SampleApplication(1) - 초난감 Project</span></h3>
     
   
 
@@ -83,7 +83,7 @@
   <div class="article-content">
     <div class="entry">
       
-        <h1 id="spring을-이용한-Simple-application의-제작-1-초난감-프로젝트"><a href="#spring을-이용한-Simple-application의-제작-1-초난감-프로젝트" class="headerlink" title="spring을 이용한 Simple application의 제작 (1) - 초난감 프로젝트"></a>spring을 이용한 Simple application의 제작 (1) - 초난감 프로젝트</h1><p>이 장의 제목은 Toby의 Spring Framework에서 붙인 이름을 그대로 표절해봤습니다. 매우 큰 문제를 가진 간단한 프로그램이 뛰어난 확장성과 처음의 너저분한 코드에서 점차 깔끔하게 구성 되어가는 코드로 점차 변경되어가는 것을 볼 수 있을겁니다.<br>먼저, 간단한 application입니다. bookStore라고 하나의 Project를 만들고, books 라는 table에 대한 CRUD와 count를 하는 application을 간단히 작성해보도록 하겠습니다.</p>
+        <h1 id="SampleApplication-1-초난감-프로젝트"><a href="#SampleApplication-1-초난감-프로젝트" class="headerlink" title="SampleApplication(1) - 초난감 프로젝트"></a>SampleApplication(1) - 초난감 프로젝트</h1><p>이 장의 제목은 Toby의 Spring Framework에서 붙인 이름을 그대로 표절해봤습니다. 매우 큰 문제를 가진 간단한 프로그램이 뛰어난 확장성과 처음의 너저분한 코드에서 점차 깔끔하게 구성 되어가는 코드로 점차 변경되어가는 것을 볼 수 있을겁니다.<br>먼저, 간단한 application입니다. bookStore라고 하나의 Project를 만들고, books 라는 table에 대한 CRUD와 count를 하는 application을 간단히 작성해보도록 하겠습니다.</p>
 <h2 id="개발-환경-준비-amp-초기화"><a href="#개발-환경-준비-amp-초기화" class="headerlink" title="개발 환경 준비 &amp; 초기화"></a>개발 환경 준비 &amp; 초기화</h2><h3 id="Docker를-이용한-Database-준비"><a href="#Docker를-이용한-Database-준비" class="headerlink" title="Docker를 이용한 Database 준비"></a>Docker를 이용한 Database 준비</h3><p>먼저, 대상이 되는 database를 준비하도록 하겠습니다. docker를 이용해서 제가 준비를 해두었습니다. docker cmd를 통해서 다음 명령어를 실행합니다.</p>
 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p <span class="number">4306</span>:<span class="number">3306</span> <span class="number">192</span>.<span class="number">168</span>.<span class="number">94</span>.<span class="number">18</span>:<span class="number">15000</span>/study-container:<span class="number">002</span> mysqld_safe</span><br></pre></td></tr></table></figure>
 <p>를 실행하면 docker container에서 실행되어 있을것입니다.<br>그 후, host machine으로 돌아와서(CTRL + P, CTRL + Q) 다음 <code>cmd</code>를 통해 db에 정상적으로 붙을 수 있는지 확인하도록 합니다.</p>
@@ -217,7 +217,7 @@
 
     <span class="post-tags">
       <i class="icon-tags"></i>
-        <a href="/tags/study/">study</a>
+        <a href="/tags/study-java/">study,java</a>
     </span>
     
 
