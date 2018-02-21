@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>08.myBatis | Programming is Fun | Still waters run deep. When the well&#39;s dry, we know the worth of water.</title>
+
+  
+  <meta name="author" content="ykyoon">
+  
+
+  
+  <meta name="description" content="myBatis지금까지는 Spring에서 제공하는 JdbcTemplate를 이용하는 방법을 알아봤습니다. 단점으로 볼 수 있는 것이, 직접적인 query들을 계속해서 코드안에 넣어야지 되는 단점이 있습니다. 그리고, 실제적인 코드와 SQL간의 분리가 되지 않는다는 단점을">
+  
+
+  
+  
+  <meta name="keywords" content="java, spring, mybatis">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="08.myBatis"/>
+
+  <meta property="og:site_name" content="Programming is Fun"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Programming is Fun" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Programming is Fun</a>
+    </h1>
+    <p class="site-description">Still waters run deep. When the well&#39;s dry, we know the worth of water.</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>08.myBatis</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2018/02/21/08-mybatis/" rel="bookmark">
+        <time class="entry-date published" datetime="2018-02-21T14:18:14.000Z">
+          2018-02-21
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <h1 id="myBatis"><a href="#myBatis" class="headerlink" title="myBatis"></a>myBatis</h1><p>지금까지는 Spring에서 제공하는 <code>JdbcTemplate</code>를 이용하는 방법을 알아봤습니다. 단점으로 볼 수 있는 것이, 직접적인 query들을 계속해서 코드안에 넣어야지 되는 단점이 있습니다. 그리고, 실제적인 코드와 SQL간의 분리가 되지 않는다는 단점을 가지고 있습니다. 국내에서 DB 접근에 가장 많이 사용하고 있는 기술인 <code>myBatis</code>에 대해서 알아보도록 하겠습니다.</p>
+<p>myBatis는 <code>Repository Pattern</code>을 충실히 지킬 수 있으며, DB의 <code>StoreProcedure</code>, <code>Function</code>과 같은 legacy sql을 직접적으로 쉽게 사용할 수 있는 장점을 가지고 있습니다. 이를 통해, JDBC를 이용한 반복적인 코드를 획기적으로 줄이는 것을 목표로 가지고 있으며, 개발자들에게 게을러질 수 있는 권리를 보장하는 것이 목표입니다.</p>
+<h2 id="myBatis의-구조"><a href="#myBatis의-구조" class="headerlink" title="myBatis의 구조"></a>myBatis의 구조</h2><p>SqlSessionFactory, SqlSession이라는 두개의 객체를 가지고 있습니다. 기본적으로 mybatis.cfg.xml 파일을 이용해서 DB에 대한 연결 설정과 각각의 mapper를 구성하는 설정으로 구성되어 있습니다.</p>
+<p>myBatis에서 DB에 대한 연결을 구성하는 방법은 다음과 같습니다.</p>
+<ol>
+<li>SqlSessionFactory 구성</li>
+<li>SqlSessionFactory를 통한 SqlSession을 구성</li>
+<li>SqlSession을 통해 mapper를 구성</li>
+</ol>
+<p>기본적인 <code>SqlSessionFactory</code>를 정의합니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span><br><span class="line"><span class="meta">&lt;!DOCTYPE configuration</span></span><br><span class="line"><span class="meta">        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"</span></span><br><span class="line"><span class="meta">        "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">environments</span> <span class="attr">default</span>=<span class="string">"development"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">environment</span> <span class="attr">id</span>=<span class="string">"development"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">transactionManager</span> <span class="attr">type</span>=<span class="string">"JDBC"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">dataSource</span> <span class="attr">type</span>=<span class="string">"POOLED"</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"driver"</span> <span class="attr">value</span>=<span class="string">"org.mariadb.jdbc.Driver"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"url"</span> <span class="attr">value</span>=<span class="string">"jdbc:mysql://127.0.0.1:4306/bookstore"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"username"</span> <span class="attr">value</span>=<span class="string">"root"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">value</span>=<span class="string">"qwer12#$"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">dataSource</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">environment</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">environments</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mappers</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mapper</span> <span class="attr">resource</span>=<span class="string">"mappers/bookDao.mapper.xml"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mappers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>그리고, 각 Repository의 method에 따른 SQL문을 xml에 정의합니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span><br><span class="line"><span class="meta">&lt;!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"com.xyzlast.bookstore.repository.BookDao"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">resultMap</span> <span class="attr">id</span>=<span class="string">"BookResult"</span> <span class="attr">type</span>=<span class="string">"com.xyzlast.bookstore.entity.Book"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span> <span class="attr">property</span>=<span class="string">"id"</span> <span class="attr">column</span>=<span class="string">"id"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"name"</span> <span class="attr">column</span>=<span class="string">"name"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"author"</span> <span class="attr">column</span>=<span class="string">"author"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"publishDate"</span> <span class="attr">column</span>=<span class="string">"publishDate"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"rentUserId"</span> <span class="attr">column</span>=<span class="string">"rentUserId"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">result</span> <span class="attr">property</span>=<span class="string">"bookStatus"</span> <span class="attr">column</span>=<span class="string">"status"</span> <span class="attr">typeHandler</span>=<span class="string">"org.apache.ibatis.type.EnumOrdinalTypeHandler"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">resultMap</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"getById"</span> <span class="attr">parameterType</span>=<span class="string">"int"</span> <span class="attr">resultMap</span>=<span class="string">"BookResult"</span>&gt;</span></span><br><span class="line">        SELECT * FROM books WHERE id = #&#123;bookId&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"getAll"</span> <span class="attr">resultMap</span>=<span class="string">"BookResult"</span>&gt;</span></span><br><span class="line">        SELECT * FROM books</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"countAll"</span> <span class="attr">resultType</span>=<span class="string">"int"</span>&gt;</span></span><br><span class="line">        SELECT count(*) FROM books</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">insert</span> <span class="attr">id</span>=<span class="string">"add"</span> <span class="attr">parameterType</span>=<span class="string">"com.xyzlast.bookstore.entity.Book"</span> <span class="attr">useGeneratedKeys</span>=<span class="string">"true"</span> <span class="attr">keyColumn</span>=<span class="string">"id"</span>&gt;</span></span><br><span class="line">        INSERT INTO books(name, author, publishDate, comment, status, rentUserId)</span><br><span class="line">        VALUES(#&#123;name&#125;, #&#123;author&#125;, #&#123;publishDate&#125;, #&#123;comment&#125;, #&#123;bookStatus.value&#125;, #&#123;rentUserId&#125;)</span><br><span class="line">    <span class="tag">&lt;/<span class="name">insert</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">"delete"</span> <span class="attr">parameterType</span>=<span class="string">"int"</span>&gt;</span></span><br><span class="line">        DELETE FROM books WHERE id = #&#123;bookId&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">delete</span> <span class="attr">id</span>=<span class="string">"deleteAll"</span>&gt;</span></span><br><span class="line">        DELETE FROM books</span><br><span class="line">    <span class="tag">&lt;/<span class="name">delete</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">update</span> <span class="attr">id</span>=<span class="string">"update"</span> <span class="attr">parameterType</span>=<span class="string">"com.xyzlast.bookstore.entity.Book"</span>&gt;</span></span><br><span class="line">        UPDATE books SET</span><br><span class="line">        name = #&#123;name&#125;, author = #&#123;author&#125;, publishDate=#&#123;publishDate&#125;, status=#&#123;bookStatus.value&#125;, rentUserId=#&#123;rentUserId&#125;, comment = #&#123;comment&#125;</span><br><span class="line">        WHERE id = #&#123;id&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">update</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>xml이 모두 준비된 후, 다음과 같은 code pattern으로 처리됩니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> SqlSessionFactory sqlSessionFactory;</span><br><span class="line">SqlSession sqlSession;</span><br><span class="line"><span class="keyword">private</span> BookDao bookDao;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Before</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    InputStream is = Resources.getResourceAsStream(<span class="string">"mybatis-config.xml"</span>);</span><br><span class="line">    sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(is);</span><br><span class="line">    sqlSession = sqlSessionFactory.openSession();</span><br><span class="line">    bookDao = sqlSession.getMapper(BookDao.class);</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@After</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">tearDown</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sqlSession != <span class="keyword">null</span>) &#123;</span><br><span class="line">        sqlSession.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">countAll</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> bookCount = bookDao.countAll();</span><br><span class="line">    assertThat(bookCount).isGreaterThan(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SqlSessionFactory를 통해, SqlSession을 얻어내고 update/delete/insert에 대한 commit을 직접 행하도록 코드를 작성했습니다. 또한 모든 method가 완료되면 반드시 Session을 닫아줘야지만 됩니다.</p>
+<h2 id="Spring-myBatis의-이용"><a href="#Spring-myBatis의-이용" class="headerlink" title="Spring-myBatis의 이용"></a>Spring-myBatis의 이용</h2><p>Spring과 myBatis를 연결하기 위해서는 추가 Library가 필요합니다.</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">compile <span class="string">group:</span> <span class="string">'org.mybatis'</span>, <span class="string">name:</span> <span class="string">'mybatis-spring'</span>, <span class="string">version:</span> <span class="string">'1.3.1'</span></span><br></pre></td></tr></table></figure>
+<p>Spring에서 제공하는 <code>@Transaction</code>을 사용하기 위해서, <code>SqlSessionTemplate</code>를 이용합니다. 이는 <code>@Transaction</code>으로 지정된 method내 같은 <code>Session</code>으로 <code>@Transaction</code>이 지정될 수 있도록 만들어줍니다.<br>이를 지정하기 위한 <code>@Configruation</code>은 다음과 같습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@ComponentScan</span>(value = &#123;</span><br><span class="line">    <span class="string">"com.xyzlast.bookstore.repository"</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="meta">@EnableTransactionManagement</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookStoreConfig</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> ApplicationContext context;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BookStoreConfig</span><span class="params">(ApplicationContext applicationContext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.context = applicationContext;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> DataSource <span class="title">dataSource</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        HikariDataSource dataSource = <span class="keyword">new</span> HikariDataSource();</span><br><span class="line">        dataSource.setDriverClassName(<span class="string">"org.mariadb.jdbc.Driver"</span>);</span><br><span class="line">        dataSource.setJdbcUrl(<span class="string">"jdbc:mysql://127.0.0.1:4306/bookstore"</span>);</span><br><span class="line">        dataSource.setUsername(<span class="string">"root"</span>);</span><br><span class="line">        dataSource.setPassword(<span class="string">"qwer12#$"</span>);</span><br><span class="line">        dataSource.setMaximumPoolSize(<span class="number">10</span>);</span><br><span class="line">        dataSource.setMinimumIdle(<span class="number">10</span>);</span><br><span class="line">        <span class="keyword">return</span> dataSource;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> PlatformTransactionManager <span class="title">transactionManager</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> DataSourceTransactionManager(dataSource());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> SqlSessionFactoryBean <span class="title">sqlSessionFactory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        SqlSessionFactoryBean sqlSessionFactoryBean = <span class="keyword">new</span> SqlSessionFactoryBean();</span><br><span class="line">        sqlSessionFactoryBean.setDataSource(dataSource());</span><br><span class="line">        sqlSessionFactoryBean.setConfigLocation(context.getResource(<span class="string">"classpath:mybatis-config.xml"</span>));</span><br><span class="line">        <span class="keyword">return</span> sqlSessionFactoryBean;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>그리고, <code>BookDaoImpl</code>을 구성해야지 됩니다. <code>BookDaoImpl</code>은 다음과 같습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repository</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BookDaoImpl</span> <span class="keyword">extends</span> <span class="title">SqlSessionDaoSupport</span> <span class="keyword">implements</span> <span class="title">BookDao</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BookDaoImpl</span><span class="params">(SqlSessionFactory sqlSessionFactory)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.setSqlSessionFactory(sqlSessionFactory);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">countAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getSqlSession().getMapper(BookDao.class).countAll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Book&gt; <span class="title">getAll</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getSqlSession().getMapper(BookDao.class).getAll();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Book <span class="title">getById</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getSqlSession().getMapper(BookDao.class).getById(id);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(Book book)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getSqlSession().insert(<span class="string">"com.xyzlast.bookstore.repository.BookDao.add"</span>, book);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">update</span><span class="params">(Book book)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getSqlSession().update(<span class="string">"com.xyzlast.bookstore.repository.BookDao.update"</span>, book);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">delete</span><span class="params">(<span class="keyword">int</span> bookId)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> getSqlSession().delete(<span class="string">"com.xyzlast.bookstore.repository.BookDao.delete"</span>, bookId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>재미있는 코드를 하나 발견할 수 있습니다. <code>BookDaoImpl</code>의 생성자는 <code>SqlSessionFactory</code>를 인자로 받게 됩니다. 그런데, <code>SqlSessionFactory</code>를 <code>Bean</code>에 등록하는 코드는 <code>@Configuration</code>에 없습니다. 이건 어떻게 되는 것일까요. 이는 <code>SqlSessionFactoryBean</code>에서 확인할 수 있습니다. <code>SqlSessionFactoryBean</code>의 내부 코드는 다음과 같습니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SqlSessionFactoryBean</span> <span class="keyword">implements</span> <span class="title">FactoryBean</span>&lt;<span class="title">SqlSessionFactory</span>&gt;, <span class="title">InitializingBean</span>, <span class="title">ApplicationListener</span>&lt;<span class="title">ApplicationEvent</span>&gt; </span>&#123;</span><br><span class="line">  ....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>구현된 interface중에 <code>FactoryBean</code>이 있는 것을 보실 수 있습니다. Spring Configuration 내부에 <code>Factory Pattern</code>을 통해서 객체를 얻어내야지 될 필요가 있을 때, <code>FactoryBean</code> interface를 이용해서 구현하면 Spring은 이를 감지하여 <code>Factory Pattern</code>을 통해 객체를 얻어내게 됩니다.</p>
+<p>마지막으로, query를 지정하는 방법은 다음 2가지로 볼 수 있습니다. <code>getMapper</code>를 통하거나, xml의 full-name을 기술하는 것. 두 방법 모두를 이용해서 구성이 가능합니다.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>국내에서 가장 많이 사용되는 <code>myBatis</code>를 이용한 DB 접근 방식에 대해서 알아봤습니다. 매우 간편한 설정 및 사용의 편의성, 무엇보다도 java 코드와 sql query간의 명확한 분리가 가장 큰 장점입니다.</p>
+<h2 id="HOMEWORK"><a href="#HOMEWORK" class="headerlink" title="HOMEWORK"></a>HOMEWORK</h2><p>기존 코드의 Dao를 모두 <code>myBatis</code>를 이용해서 구성해주시길 바랍니다.</p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/java-spring-mybatis/">java, spring, mybatis</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2018 ykyoon
+    
+  </p>
+</footer>
+    
+  </div>
+</div>
+</body>
+</html>
