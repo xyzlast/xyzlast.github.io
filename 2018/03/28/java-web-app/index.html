@@ -1,0 +1,258 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>13.Java Web Application의 구조 | Programming is Fun | Still waters run deep. When the well&#39;s dry, we know the worth of water.</title>
+
+  
+  <meta name="author" content="ykyoon">
+  
+
+  
+  <meta name="description" content="Java Web Application의 구조java로 개발한 application을 배포를 할때는 주로 jar, war 형태로 배포를 하게 됩니다.이 둘은 완전히 동일한 형식입니다. 다만, war는 web application을 배포하는 형식이고 jar는 library">
+  
+
+  
+  
+  <meta name="keywords" content="java, web.xml">
+  
+
+  <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta property="og:title" content="13.Java Web Application의 구조"/>
+
+  <meta property="og:site_name" content="Programming is Fun"/>
+
+  
+  <meta property="og:image" content="/favicon.ico"/>
+  
+
+  <link href="/favicon.ico" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Programming is Fun" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+</head>
+
+
+<body>
+<div class="blog">
+  <div class="content">
+
+    <header>
+  <div class="site-branding">
+    <h1 class="site-title">
+      <a href="/">Programming is Fun</a>
+    </h1>
+    <p class="site-description">Still waters run deep. When the well&#39;s dry, we know the worth of water.</p>
+  </div>
+  <nav class="site-navigation">
+    <ul>
+      
+        <li><a href="/">Home</a></li>
+      
+        <li><a href="/archives">Archives</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+    <main class="site-main posts-loop">
+    <article>
+
+  
+    
+    <h3 class="article-title"><span>13.Java Web Application의 구조</span></h3>
+    
+  
+
+  <div class="article-top-meta">
+    <span class="posted-on">
+      <a href="/2018/03/28/java-web-app/" rel="bookmark">
+        <time class="entry-date published" datetime="2018-03-27T23:17:31.000Z">
+          2018-03-28
+        </time>
+      </a>
+    </span>
+  </div>
+
+
+  
+
+  <div class="article-content">
+    <div class="entry">
+      
+        <h1 id="Java-Web-Application의-구조"><a href="#Java-Web-Application의-구조" class="headerlink" title="Java Web Application의 구조"></a>Java Web Application의 구조</h1><p>java로 개발한 application을 배포를 할때는 주로 jar, war 형태로 배포를 하게 됩니다.<br>이 둘은 완전히 동일한 형식입니다. 다만, war는 web application을 배포하는 형식이고 jar는 library나 일반 application을 배포하는 형식입니다.</p>
+<h2 id="Jar-Application"><a href="#Jar-Application" class="headerlink" title="Jar Application"></a>Jar Application</h2><p>build된 jar 파일의 압축을 풀어보면 다음과 같은 폴더 구조를 볼 수 있습니다.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── META-INF</span><br><span class="line">│   └── MANIFEST.MF</span><br><span class="line">└── com</span><br></pre></td></tr></table></figure>
+<p><code>com</code>으로 시작되는 폴더는 만들어진 class가 들어가는 위치입니다. 그런데 지금 생성하지 않은 <code>META-INF</code> 폴더가 있는 것을 볼 수 있습니다. 폴더 안에는 build환경에 따라 다른 다양한 파일들이 들어있는데, 주목할 내용은 <code>MANIFEST.MF</code> 입니다.</p>
+<p>이 파일은 다음과 같은 정보를 포함합니다.</p>
+<ul>
+<li>Manifest-Version: Manifest file version</li>
+<li>Build-By: Build user</li>
+<li>Build-Jdk: jdk version</li>
+<li>Created-By: Build tool</li>
+<li>Class-Path: 외부 추가 lib를 지정할 수 있습니다. jar내부에 외부 추가 jar를 같이 넣어서 배포가 가능합니다.</li>
+<li>Main-Class: 실행 파일 경로 및 파일명을 지정합니다.</li>
+</ul>
+<p>이 내용은 jar파일에 대한 manual이나 스팩을 기록하는 폴더입니다. 그리고 우리가 web-resource와 같은 정적인 resource를 배포할 때도 역시 META-INF 폴더를 이용하게 됩니다. jar 파일은 자신이 개발한 class를 가질수도 있고, 심지어 jar에 jre까지 포함하는 것까지 가능합니다. 다른 jar 역시 추가하는 것도 가능합니다.</p>
+<h2 id="War-Application"><a href="#War-Application" class="headerlink" title="War Application"></a>War Application</h2><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">├── META-INF</span><br><span class="line">│   └── MANIFEST.MF</span><br><span class="line">└── WEB-INF</span><br><span class="line">    ├── classes</span><br><span class="line">    └── lib</span><br></pre></td></tr></table></figure>
+<p>war의 기본정보와 static-resource를 저장한 META-INF 폴더의 경우에는 jar와 동일하게 만들어집니다. 그리고 또다른 폴더가 하나더 생깁니다. WEB-INF 폴더가 바로 그것인데요. 이 폴더는 다음 2개의 폴더를 같이 포함합니다.</p>
+<ul>
+<li>lib - 외부 및 추가 jar가 위치하는 폴더</li>
+<li>classes - 개발된 application의 compile된 class 파일이 위치</li>
+</ul>
+<p>war의 경우에는 ClassLoader에 의해서 로드되는 객체들은 classes 폴더를 기준으로 로드가 이루어지게 됩니다.</p>
+<p>그리고, 이 안에는 매우 중요한 파일이 하나 들어가게 됩니다. 그것은 web.xml인데요. java web application의 구성은 기본적으로 WEB-INF/web.xml 에서 결정됩니다. web.xml은 필터, 서블릿, DB소스 등  web container가 구동하는데 이용되는 환경설정파일입니다. 서버가 처음 로딩될때 web.xml파일을 읽어들여 해당 환경설정에 대해 어플리케이션 배치를 하게 됩니다. 다른 말로 web.xml은 배치 서술자(deployment de-scriptor)라고도 합니다.</p>
+<h2 id="web-xml"><a href="#web-xml" class="headerlink" title="web.xml"></a>web.xml</h2><p>web.xml의 기본 환경설정 정보는 다음과 같습니다.</p>
+<ul>
+<li>필터정보 (매핑 포함)</li>
+<li>서블릿정보 (매핑 포함)</li>
+<li>웹 애플리케이션 정보</li>
+<li>세션정보</li>
+<li>세션정보가 소멸, 생성, 수정되는 것을 알려주는 리스너 정보</li>
+<li>MIME매핑</li>
+<li>welcomefile정보</li>
+<li>errorPage 정보</li>
+<li>url보호 정보</li>
+<li>인터프라이즈 빈의 홈레퍼런스 정보 (로컬 레퍼런스 정보 포함)</li>
+</ul>
+<h3 id="필터정보"><a href="#필터정보" class="headerlink" title="필터정보"></a>필터정보</h3><p>필터는 요청이 들어오면 URL 패턴을 분석해서 해당 패턴의 요청이 들어오면 해당 요청에 담긴 정보들을 프로그래머가 원하는 형태의 데이터로 가공해서 서버로 요청을 넘길 수 있습니다. servlet과 비슷한 개념으로 계속 요청을 감시하고있습니다가 url패턴에 해당하는 요청이 들어오게되면 해당 요청을 가로채서 원하는 데이터 형태로 가공한뒤 다시 요청을 서버로 보내는 역할을 하게 됩니다.. 따라서 서버내에서 사용될 데이터 또는 화면으로 다시 보낼 데이터의 형태를 프로그래머가 원하는 형태로 단일화 시킬 수 있습니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>myRequest<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>myFilter.util.myReqFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>myRequestFilter<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>filterTest<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>필터 이름과 클래스, 초기화 파라미터를 지정하게 됩니다.. myRequest라는 필터는 myFilter.util 페키지 안에 있는 myReqFilter를 호출하며 초기화 파라미터로 myRequestFilter의 이름을 가진 filterTest값을 가지고 filter를 호출할것입니다. filter를 사용할때 사용할 클래스는 반드시 Filter인터페이스를 implenebts받아 doFilter메소드를 반드시 오버라이드 해주어야 하며 메소드 실행순서는 init() -&gt; doFilter() -&gt; destroy() 순으로 구성됩니다. 이는 Servlet의 생명 주기와 동일하게 동작합니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>myRequest<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.doFilter<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>위에서 선언한 filter정보를 url패턴과 매핑하는 부분입니다.<br>어떠한 URL의 확장자로 .doFilter가 함께 넘어오면 myRequest필터를 호출하게 되고 해당 필터는 myFilter.util 페키지안에 있는 myReqFilter 를 호출하게 됩니다. url-pattern 대신 servlet-name이 올 수 있습닌다.</p>
+<p>servlet-name이 들어오게 되면 해당 패턴에 맞는 모든 filter가 실행되고 나서 servlet을 호출하게 됩니다..<br>filter는 여러겹으로 사용할 수 있는데 필터 체인이라는 용어로 쓰입니다.</p>
+<p><img src="/images/13/01.png" alt=""></p>
+<h3 id="서블릿-Servlet-정보"><a href="#서블릿-Servlet-정보" class="headerlink" title="서블릿(Servlet) 정보"></a>서블릿(Servlet) 정보</h3><p>필터와 비슷한 맥락의 기능입니다. 그렇지만 큰 차이를 가지고 옵니다. Filter의 경우에는 Response와 Request에 대한 stream의 처리를 담당하고, 이에 대한 실질적인 Action을 담당하는 것이 Servlet입니다. web.xml에 매핑되어져 있는 서블릿들은 해당 요청을 포함하여 url패턴을 분석하고 거기에 매핑되어져 있는 클래스를 호출하여 처리를 하게 됩니다.<br>지정 방법은 다음과 같습니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>loginServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>myServlet.util.loginServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>위처럼 하나의 서블릿 클래스를 생성해두고 해당 클래스를 servlet-class라는 element를 지정하게 됩니다..<br>나중에 loginServlet을 호출하면 myServlet.util 페키지 안에있는 loginServlet클래스가 호출될것입니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>loginServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.login<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>url패턴과 해당 해당 패턴에 해당하는 url로 접근시 호출될 servlet을 설정하는 부분입니다.<br>메타문자로 <em>가 올 수 있고 확장자를 설정하게 됩니다..<br>나중에 </em>.login이라는 URL을 서버로 요청하게되면 loginServlet의 이름을 가진 서블릿을 호출하게 됩니다..<br>해당 서블릿은 위에서 myServlet.util.loginServlet 클래스를 매핑해두었으므로 해당 클래스가 호출되는 형태가 될것입니다.</p>
+<p>Spring은 이곳에 <code>DispatcherServlet</code>이라는 Spring에서 제공하는 Servlet을 이용해서 Spring MVC에서 Request를 처리합니다. 예를 들어 Naver의 경우에는 <code>*.nhn</code> 이라는 url-pattern에 <code>DispatcherServlet</code>을 연결시켜두는 것이 일반적입니다.<br>인터넷 서핑을 주로 하시다보면 <code>*.do</code> url을 간간히 보게 되는데요. 이것은 Spring의 2.5대 버젼에서 Spring에서 추천하던 url-pattern입니다. web.xml의 설정의 경우에는 개발자들이 copy-paste 신공을 펼치는 경우가 많기 때문에 이것을 계속해서 이용하게 되는 경우도 많지요.</p>
+<h3 id="웹-어플리케이션-정보-Web-Application"><a href="#웹-어플리케이션-정보-Web-Application" class="headerlink" title="웹 어플리케이션 정보 (Web Application )"></a>웹 어플리케이션 정보 (Web Application )</h3><p>웹 어플리케이션 정보를 설정하는 부분으로</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">display-name</span>&gt;</span>webApplication<span class="tag">&lt;/<span class="name">display-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">description</span>&gt;</span>desc for webApplication<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>으로, Web Application의 정보와 표시 이름을 적을 수 있습니다.</p>
+<h3 id="세션정보-Session"><a href="#세션정보-Session" class="headerlink" title="세션정보 ( Session )"></a>세션정보 ( Session )</h3><p>Session의 timeout 및 공유 방법을 결정할 수 있습니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">session-config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">timeout</span>&gt;</span>20<span class="tag">&lt;/<span class="name">timeout</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">shared</span>&gt;</span>true<span class="tag">&lt;/<span class="name">shared</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">session-config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="세션-리스너-정보-Session-Listner"><a href="#세션-리스너-정보-Session-Listner" class="headerlink" title="세션 리스너 정보 ( Session Listner )"></a>세션 리스너 정보 ( Session Listner )</h3><p>Session이 연결되고, 제거되는 각각의 event에 연결되는 Listner에 대한 정보를 기술할 수 있습니다. 아래는 servlet에서 기본으로 제공하는 listener입니다.</p>
+<h4 id="javax-servlet-ServletContextAttributeListener"><a href="#javax-servlet-ServletContextAttributeListener" class="headerlink" title="javax.servlet.ServletContextAttributeListener"></a>javax.servlet.ServletContextAttributeListener</h4><p>이 리스너는 컨텍스트에 저장된 애트리뷰의 변화가 있었을 때 설정된 이벤트를 엔진이 자동으로 발생시키도록 합니다. 이벤트 감지를 얻어내기 위해서는 여러분들이 직접 작성한 리스너의 implemention클래스를 통해야 하는것은 물론이며, 아래의 리스너 모두 동일하게 설정됩니다.</p>
+<h4 id="javax-servlet-ServletContextListener"><a href="#javax-servlet-ServletContextListener" class="headerlink" title="javax.servlet.ServletContextListener"></a>javax.servlet.ServletContextListener</h4><p>당신이 작성한 웹애플리케이션에서 컨텍스트를 이용하여 무언가를 저장하고 이용할 수 있는데 이 리스너의 작동은 그러한 컨텍스트에 대한 변경이 이루어졌을 때 자동으로 엔진이 감지하고 작성한 클래스의 이벤트를 발생시킵니다.</p>
+<h4 id="javax-servlet-http-HttpSessionActivationListener"><a href="#javax-servlet-http-HttpSessionActivationListener" class="headerlink" title="javax.servlet.http.HttpSessionActivationListener"></a>javax.servlet.http.HttpSessionActivationListener</h4><p>request.getSession(true)같은 경우처럼 Session에 대한 내용이 새로 생성되어 activate되어졌을 때 발생하는 이벤트를 감지하는 리스너입니다.</p>
+<h4 id="javax-servlet-http-HttpSessionAttributeListener"><a href="#javax-servlet-http-HttpSessionAttributeListener" class="headerlink" title="javax.servlet.http.HttpSessionAttributeListener"></a>javax.servlet.http.HttpSessionAttributeListener</h4><p>HttpSession에 대한 애트리뷰트의 변경시 연결되어지는 리스너입니다.</p>
+<h4 id="javax-servlet-http-HttpSessionBindingListener"><a href="#javax-servlet-http-HttpSessionBindingListener" class="headerlink" title="javax.servlet.http.HttpSessionBindingListener"></a>javax.servlet.http.HttpSessionBindingListener</h4><p>HttpSession에 대하여 클라이언트 세션정보에 대한 바인딩이 이루어졌을 경우 감지되는 리스너입니다.</p>
+<p>이 SessionListener들을 상속받아 구현된 class에 대한 정보를 web.xml에 다음과 같이 등록하여 사용가능합니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">listener</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">listener-class</span>&gt;</span>SessionListener<span class="tag">&lt;/<span class="name">listener-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">listener</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="MIME-매핑-MIME-Mapping"><a href="#MIME-매핑-MIME-Mapping" class="headerlink" title="MIME 매핑 (MIME Mapping)"></a>MIME 매핑 (MIME Mapping)</h3><p>web server에서 보내지는 각각의 파일 리소스에 대한 정보를 mapping하는 영역입니다. 예를 들어 JSON의 경우 application/json 형태임을 web browser에게 알리는 등의 일을 수행합니다. 이것이 정상적으로 설정되어 있지 않으면 hwp와 같은 파일 포멧을 다운받지 못하고, browser에서 직접 열게 되는 식의 오동작을 발생시키게 됩니다. 아래와 같은 형식으로 설정이 가능합니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mime-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">extension</span>&gt;</span>zip<span class="tag">&lt;/<span class="name">extension</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mime-type</span>&gt;</span>application/zip<span class="tag">&lt;/<span class="name">mime-type</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mime-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mime-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">extension</span>&gt;</span>hwp<span class="tag">&lt;/<span class="name">extension</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mime-type</span>&gt;</span>application/unknown<span class="tag">&lt;/<span class="name">mime-type</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mime-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="welcomefile-정보-welcomeFile"><a href="#welcomefile-정보-welcomeFile" class="headerlink" title="welcomefile 정보 ( welcomeFile )"></a>welcomefile 정보 ( welcomeFile )</h3><p>welcomeFile은 서버에 접속하면 가장 최초로 보여줄 파일을 지정하는 부분입니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">welcome-file-list</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>index.html<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">welcome-file</span>&gt;</span>index.jsp<span class="tag">&lt;/<span class="name">welcome-file</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">welcome-file-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>서버를 구동한 후 <a href="http://localhost:8080/myWeb/" target="_blank" rel="noopener">http://localhost:8080/myWeb/</a> 로 접속을 하게되면 index.html이 실행될것입니다. html파일이 없다면 index.jsp가 실행됩니다.</p>
+<h3 id="errorPage-정보-ErrorPage"><a href="#errorPage-정보-ErrorPage" class="headerlink" title="errorPage 정보( ErrorPage )"></a>errorPage 정보( ErrorPage )</h3><p>특정 요청에 대해 error가 반환될때 해당 페이지를 보여주도록 설정이 가능합니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">error-page</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">error-code</span>&gt;</span>404<span class="tag">&lt;/<span class="name">error-code</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">location</span>&gt;</span>/errors/404.jsp<span class="tag">&lt;/<span class="name">location</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">error-page</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">error-page</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">error-code</span>&gt;</span>java.lang.NullPointerException<span class="tag">&lt;/<span class="name">error-code</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">location</span>&gt;</span>/errors/badcode.jsp<span class="tag">&lt;/<span class="name">location</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">error-page</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="url보호-정보-URL-Security"><a href="#url보호-정보-URL-Security" class="headerlink" title="url보호 정보 ( URL Security )"></a>url보호 정보 ( URL Security )</h3><p>로그인 및 각 URL에 대한 접근 정책을 결정할 수 있습니다.  이 때 사용되는 Security 정책은 servlet-container의 정책에 따르게 되기 때문에 Web Application에서 사용하기에는 조금 힘듭니다.<br>tomcat에서는 conf/tomcat-user.xml 에 사용자가 정의되어 있습니다.  tomcat manager에 등록되어 있는 default security 정책은 다음과 같습니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">security-constraint</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">display-name</span>&gt;</span>Name String<span class="tag">&lt;/<span class="name">display-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">web-resource-collection</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">web-resource-name</span>&gt;</span>GETServlet<span class="tag">&lt;/<span class="name">web-resource-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>some description<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/servlet/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">http-method</span>&gt;</span>GET<span class="tag">&lt;/<span class="name">http-method</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">web-resource-collection</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">auth-constraint</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">description</span>&gt;</span>some description<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">role-name</span>&gt;</span>*<span class="tag">&lt;/<span class="name">role-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">auth-constraint</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">user-data-constraint</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">description</span>&gt;</span>some description<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">transport-guarantee</span>&gt;</span>INTEGRAL<span class="tag">&lt;/<span class="name">transport-guarantee</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">user-data-constraint</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">security-constraint</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">login-config</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">auth-method</span>&gt;</span>FORM<span class="tag">&lt;/<span class="name">auth-method</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">realm-name</span>&gt;</span>MemoryRealm<span class="tag">&lt;/<span class="name">realm-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">form-login-config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form-login-page</span>&gt;</span>login.jsp<span class="tag">&lt;/<span class="name">form-login-page</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form-error-page</span>&gt;</span>notAuthenticated.jsp<span class="tag">&lt;/<span class="name">form-error-page</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">form-login-config</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">login-config</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">security-role</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span>some description<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">role-name</span>&gt;</span>administrator<span class="tag">&lt;/<span class="name">role-name</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">security-role</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="인터프라이즈-빈의-홈레퍼런스-정보-로컬-레퍼런스-정보-포함-Interprize-Bean’s-Home-Reference-Local-Reference"><a href="#인터프라이즈-빈의-홈레퍼런스-정보-로컬-레퍼런스-정보-포함-Interprize-Bean’s-Home-Reference-Local-Reference" class="headerlink" title="인터프라이즈 빈의 홈레퍼런스 정보 (로컬 레퍼런스 정보 포함) ( Interprize Bean’s Home Reference [Local Reference])"></a>인터프라이즈 빈의 홈레퍼런스 정보 (로컬 레퍼런스 정보 포함) ( Interprize Bean’s Home Reference [Local Reference])</h3><p>이제는 과거의 유산이 되어버린 ejb에 대한 설정 정보가 위치하는 곳입니다. ejb에 대한 정보 설정은 다음과 같이 설정됩니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">env-entry</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span>some description<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">env-entry-name</span>&gt;</span>MinimumValue<span class="tag">&lt;/<span class="name">env-entry-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">env-entry-value</span>&gt;</span>5<span class="tag">&lt;/<span class="name">env-entry-value</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">env-entry-type</span>&gt;</span>java.lang.Integer<span class="tag">&lt;/<span class="name">env-entry-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">env-entry</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ejb-ref</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span>some description<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ejb-ref-name</span>&gt;</span>Employee Bean<span class="tag">&lt;/<span class="name">ejb-ref-name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">ejb-ref-type</span>&gt;</span>EmployeeBean<span class="tag">&lt;/<span class="name">ejb-ref-type</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">home</span>&gt;</span>com.foobar.employee.EmployeeHome<span class="tag">&lt;/<span class="name">home</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">remote</span>&gt;</span>com.foobar.employee.Employee<span class="tag">&lt;/<span class="name">remote</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ejb-ref</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="web-xml-등록법"><a href="#web-xml-등록법" class="headerlink" title="web.xml 등록법"></a>web.xml 등록법</h2><p>servlet의 변화에 따라 web.xml은 많은 확장이 있었습니다. web.xml의 정보는 다음 3가지 방법으로 표현될 수 있습니다.</p>
+<ul>
+<li>WEB-INF/web.xml 을 이용해서 등록하는 방법</li>
+</ul>
+<blockquote>
+<p>가장 많이 사용되고 있으며, servlet 1.0부터 지금까지 구현된 방법입니다. 가장 대중적입니다.</p>
+</blockquote>
+<ul>
+<li>META-INF/web-fragment.xml 을 이용하는 방법</li>
+</ul>
+<blockquote>
+<p>servlet 3.0 부터 지원되는 방법입니다. web.xml은 web application에 종속되는 방법입니다. web application 뿐 아니라, jar로 개발된 project에서 가지고 있는 META-INF 폴더 안의 web-fragment.xml을 이용해서 web을 구동하는 방법을 지원하고 있습니다. web-fragment.xml은 web.xml과 내용이 동일합니다. 이 방법이 나오게 된 이유는 Servlet 3.0에서부터는 web container를 포함한 설치형 war가 배포가 가능합니다. 지금까지는 web application을 tomcat과 같은 web container에 배포하는 것이 일반적이였지만, web container를 포함한 한개의 web application으로 구동하는 방법을 servlet 3.0에서 이제는 지원하고 있습니다.</p>
+</blockquote>
+<ul>
+<li>javax.servlet.ServletContainerInitializer interface를 구현한 객체를 이용하는 방법</li>
+</ul>
+<blockquote>
+<p>servlet 3.0 부터 지원되는 방법입니다. web.xml이 없이, application에서 작성한 ServletContainerInitializer를 구현하는 것으로 web.xml 대신 페이지를 작성할 수 있도록 지원하고 있습니다.</p>
+</blockquote>
+<p>3가지 방법중 3번의 방법이 조금 재미있습니다. ServletContainerInitializer를 구현한 객체를 이용하게 되면, 다음과 같은 설정들만 사용 가능합니다.</p>
+<ul>
+<li>Listener 구성</li>
+<li>filter 구성</li>
+<li>Session Listener 구성</li>
+<li>ejb 구성</li>
+</ul>
+<p>web.xml의 핵심이 구현되긴하지만, 자주 사용되는 다음 항목들이 제공되지 않습니다.</p>
+<ul>
+<li>session-config</li>
+<li>error-page</li>
+</ul>
+<p>이 두항목을 사용하기 위해서는 web.xml과 ServletContainerInitializer를 구현한 객체를 같이 사용해주면 됩니다. 그럼 ServletContainer는 web.xml을 먼저 로딩 후, 객체를 로드해서 사용하게 됩니다.</p>
+<h2 id="Gradle을-이용한-Hello-World-Web-App"><a href="#Gradle을-이용한-Hello-World-Web-App" class="headerlink" title="Gradle을 이용한 Hello World Web App"></a>Gradle을 이용한 Hello World Web App</h2><p>먼저 기본적으로 기존에 사용하던 <code>java-application</code>으로부터 시작합니다.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle init --<span class="built_in">type</span>=java-application</span><br></pre></td></tr></table></figure>
+<p>구성된 build.gradle에서 다음을 추가합니다.</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="string">plugin:</span> <span class="string">'war'</span></span><br></pre></td></tr></table></figure>
+<p>web application을 개발할 예정이기 때문에, <code>war</code>를 추가하는 것이 필요합니다.<br>이제 IntelliJ에서 Project를 open 시킵니다.</p>
+<p>먼저 web에서 사용될 resource를 추가하도록 합니다. <code>/src/main/webapp</code> 폴더를 추가합니다. 그리고 내부에 <code>META-INF</code>, <code>WEB-INF</code> 폴더를 생성하여 추가합니다.<br>만들어진 전체 folder구조는 다음과 같습니다.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── build.gradle</span><br><span class="line">├── settings.gradle</span><br><span class="line">└── src</span><br><span class="line">    ├── main</span><br><span class="line">    │   ├── java</span><br><span class="line">    │   │   └── com</span><br><span class="line">    │   │       └── xyzlast</span><br><span class="line">    │   ├── resources</span><br><span class="line">    │   └── webapp</span><br><span class="line">    │       ├── META-INF</span><br><span class="line">    │       ├── WEB-INF</span><br><span class="line">    │       │   ├── jsp</span><br><span class="line">    │       │   └── web.xml</span><br><span class="line">    │       └── index.jsp</span><br><span class="line">    └── test</span><br><span class="line">        ├── java</span><br><span class="line">        └── resources</span><br></pre></td></tr></table></figure>
+<p>신규 Servlet을 생성합니다. package는 자신이 원하는대로 넣어주시면 됩니다.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">4589997486063553833L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String message;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        req.setAttribute(<span class="string">"date"</span>, <span class="keyword">new</span> Date());</span><br><span class="line">        req.setAttribute(<span class="string">"message"</span>, <span class="keyword">this</span>.message);</span><br><span class="line">        req.getRequestDispatcher(<span class="string">"/WEB-INF/jsp/hello.jsp"</span>).forward(req, resp);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.destroy();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.init();</span><br><span class="line">        message = <span class="string">"Hello World from Servlet"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>꼭 <code>HttpServlet</code> 객체를 상속받아 처리해야지 됩니다. 이제 <code>Servlet</code>에서 사용할 <code>jsp</code>파일을 만들어줍니다. 위치는 <code>src/main/webapp/WEB-INF/jsp/hello.jsp</code>입니다.<br>이 jsp 파일은 다음과 같이 구성가능합니다.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang=<span class="string">"en"</span>&gt;</span><br><span class="line">    &lt;head&gt;</span><br><span class="line">        &lt;title&gt;Hello World&lt;/title&gt;</span><br><span class="line">    &lt;/head&gt;</span><br><span class="line">    &lt;body&gt;</span><br><span class="line">        &lt;p&gt;$&#123;message&#125;, $&#123;date&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<p>이제 <code>src/main/webapp/WEB-INF</code>안에 <code>web.xml</code>을 넣어줍니다. <code>web.xml</code>은 다음과 같습니다.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">web-app</span> <span class="attr">xmlns</span>=<span class="string">"http://java.sun.com/xml/ns/j2ee"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"</span></span></span><br><span class="line"><span class="tag">         <span class="attr">version</span>=<span class="string">"2.4"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">display-name</span>&gt;</span>HelloWorld Application<span class="tag">&lt;/<span class="name">display-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>com.xyzlast.servlet.HelloWorldServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>HelloServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/hello.do<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><code>web.xml</code>에서는 <code>/hello.do</code>에 <code>HelloWorldServlet</code>을 연결시키는 코드가 있는 것을 볼 수 있습니다.</p>
+<p>이제 구성된 web application을 실행시킬 수 있어야지 됩니다. 개발중인 web application을 실행하기 위해서는 여러가지 방법들이 있습니다.<br>다들 가장 많이 알고 계신 방법들이, 지금 실행중인 tomcat의 webapp folder에 war 파일을 배포하여 실행하면 됩니다.</p>
+<p>war 파일을 만드는 방법은 다음과 같습니다.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gradle war</span><br></pre></td></tr></table></figure>
+<p><code>BUILD SUCCESS</code>가 나온 후, <code>/build/libs</code>에 보시면 war파일을 확인 할 수 있습니다.</p>
+<p>그런데, 이 방법은 너무나 비효율적입니다. Servlet을 하나 추가할때마다 war 파일을 만들고, war 파일을 카피하는 일들을 계속해서 반복해야지 됩니다. 이를 편하게 해주는 plugin을 gradle에서 제공합니다.</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apply <span class="string">from:</span> <span class="string">'https://raw.github.com/akhikhl/gretty/master/pluginScripts/gretty.plugin'</span></span><br><span class="line">gretty &#123;</span><br><span class="line">    contextPath = <span class="string">'/'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>추가 후, <code>grdle appRun</code>을 통해 실행하면 다음과 같은 메세지를 볼 수 있습니다.</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">16</span>:<span class="number">55</span>:<span class="number">04</span> INFO  Jetty <span class="number">9</span>.<span class="number">2</span>.<span class="number">22</span>.v20170606 started and listening on port <span class="number">8080</span></span><br><span class="line"><span class="number">16</span>:<span class="number">55</span>:<span class="number">04</span> INFO  HelloWorld Application runs <span class="built_in">at</span>:</span><br><span class="line"><span class="number">16</span>:<span class="number">55</span>:<span class="number">04</span> INFO    http://localhost:<span class="number">8080</span>/</span><br><span class="line"></span><br><span class="line">&gt; Task :appRun</span><br><span class="line">Press any key to stop the server.</span><br></pre></td></tr></table></figure>
+<p>이제 web browser에서 <code>http://localhost:8080/hello.do</code>로 접근하면 만든 web page를 보실 수 있습니다.</p>
+<p><img src="/images/14/03.png" alt=""></p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>Java에서 Web을 표시하는 기본적인 방법에 대해서 알아봤습니다. <code>web.xml</code>의 내용 구성과 개발시에 필요한 <code>build.gradle</code>구성은 익혀두는 것이 필요합니다.</p>
+
+      
+    </div>
+
+  </div>
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+
+    
+
+    
+    
+
+    <span class="post-tags">
+      <i class="icon-tags"></i>
+        <a href="/tags/java-web-xml/">java, web.xml</a>
+    </span>
+    
+
+    </div>
+
+    
+  </div>
+</article>
+
+
+    </main>
+
+    <footer class="site-footer">
+  <p class="site-info">
+    Proudly powered by <a href="https://hexo.io/" target="_blank">Hexo</a> and
+    Theme by <a href="https://github.com/CodeDaraW/Hacker" target="_blank">Hacker</a>
+    </br>
+    
+    &copy; 2018 ykyoon
+    
+  </p>
+</footer>
+    
+  </div>
+</div>
+</body>
+</html>
